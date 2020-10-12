@@ -18,7 +18,22 @@ abstract class Db {
   }
 
   static void onCreate(Database db, int version) async {
-    await db.execute('''''');
-    await db.execute('''''');
+    //Journal
+    await db.execute('''CREATE TABLE journan (
+    id BIGINT PRIMARY KEY UNIQUE,
+    created DATETIME DEFAULT (NOW() ) NOT NULL,
+    changed DATETIME NOT NULL DEFAULT (NOW() ),
+    description VARCHAR (64)  DEFAULT ('') NOT NULL,
+    comment     VARCHAR (250) NOT NULL DEFAULT ('') );
+    ''');
+
+    //Detail
+    await db.execute('''CREATE TABLE idea_detail (
+    id BIGINT PRIMARY KEY,
+    idea_id BIGINT NOT NULL REFERENCES journan (id) ON DELETE CASCADE ON UPDATE NO ACTION,
+    point_id INTEGER (2) NOT NULL,
+    mark INTEGER (2) NOT NULL DEFAULT (0),
+    comment VARCHAR (255) NOT NULL DEFAULT ('') );
+    ''');
   }
 }
