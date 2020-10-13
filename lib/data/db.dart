@@ -6,6 +6,7 @@ abstract class Db {
   static Database _db;
 
   static int get _version => 1;
+
   static Future<void> init() async {
     if (_db != null) return;
 
@@ -36,4 +37,13 @@ abstract class Db {
     comment VARCHAR (255) NOT NULL DEFAULT ('') );
     ''');
   }
+
+  static Future<list<map<string, dynamic="">>> query(String table) async => _db.query(table);
+
+  static Future<int> insert(String table, Model model) async => await _db.insert(table, model.toMap());
+
+  static Future<int> update(String table, Model model) async => await _db.update(table, model.toMap(), where: 'id = ?', whereArgs:[model.id]);
+
+  static Future<int> delete(String table, Model model) async => await _db.delete(table, where: 'id = ?', whereArgs:[model.id]);
+
 }
